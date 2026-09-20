@@ -113,6 +113,8 @@ model = load_model(
     CHECKPOINT_PATH
 )
 
+
+
 print("Model loaded successfully.")
 print()
 

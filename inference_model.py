@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import torchvision.models as models
@@ -147,23 +148,55 @@ eval_transform = transforms.Compose([
 # LOAD MODEL
 # ============================================================
 
+# def load_model(checkpoint_path):
+
+#     model = MultiTaskResNet()
+
+#     checkpoint = torch.load(
+#         checkpoint_path,
+#         map_location=DEVICE
+#     )
+
+#     model.load_state_dict(
+#         checkpoint
+#     )
+
+#     model = model.to(
+#         DEVICE
+#     )
+
+#     model.eval()
+
+#     return model
+
 def load_model(checkpoint_path):
+    if not os.path.exists(checkpoint_path):
+        raise FileNotFoundError(
+            f"Model checkpoint not found: {checkpoint_path}"
+        )
 
-    model = MultiTaskResNet()
+    # Create the model structure without allocating all parameter
+    # tensors in RAM first.
+    with torch.device("meta"):
+        model = MultiTaskResNet()
 
-    checkpoint = torch.load(
+    # Memory-map the checkpoint instead of loading the entire
+    # checkpoint into RAM at once.
+    state = torch.load(
         checkpoint_path,
-        map_location=DEVICE
+        map_location="cpu",
+        weights_only=True,
+        mmap=True
     )
 
+    # Attach the checkpoint tensors directly to the model.
     model.load_state_dict(
-        checkpoint
+        state,
+        assign=True,
+        strict=True
     )
 
-    model = model.to(
-        DEVICE
-    )
-
+    model = model.to(DEVICE)
     model.eval()
 
     return model
