@@ -1,5 +1,7 @@
 import os
 import torch
+torch.set_num_threads(1)
+torch.set_num_interop_threads(1)
 import torch.nn as nn
 import torchvision.models as models
 import torchvision.transforms as transforms
@@ -228,7 +230,7 @@ def predict_image(
     )
 
 
-    with torch.no_grad():
+    with torch.inference_mode():
 
         material_logits, damage_logits = model(
             image_tensor
@@ -275,6 +277,17 @@ def predict_image(
         .item()
         * 100
     )
+
+    # --------------------------------------------------------
+    # RELEASE TEMPORARY INFERENCE MEMORY
+    # --------------------------------------------------------
+
+    del material_logits
+    del damage_logits
+    del material_probabilities
+    del damage_probabilities
+    del image_tensor
+    del image
 
 
     return {
