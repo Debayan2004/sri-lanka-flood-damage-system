@@ -1,0 +1,9 @@
+Flask
+torch
+torchvision
+Pillow
+pandas
+openpyxl
+matplotlib
+numpy
+gunicorn

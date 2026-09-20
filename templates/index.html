@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sri Lanka Flood Damage Application</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f3f5f7;
+
+            color: #1f2933;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+           ===================================================== */
+
+        .container {
+
+            width: 95%;
+            max-width: 1500px;
+
+            margin: 30px auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .header {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 15px
+                rgba(0, 0, 0, 0.08);
+
+            margin-bottom: 25px;
+
+            text-align: center;
+        }
+
+
+        .header h1 {
+
+            margin: 0 0 10px 0;
+
+            font-size: 32px;
+
+            color: #172b4d;
+        }
+
+
+        .header p {
+
+            margin: 0;
+
+            color: #667085;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
+        .card {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 15px
+                rgba(0, 0, 0, 0.08);
+
+            margin-bottom: 25px;
+        }
+
+
+        .card h2 {
+
+            margin-top: 0;
+
+            margin-bottom: 20px;
+
+            color: #172b4d;
+        }
+
+
+        /* =====================================================
+           UPLOAD AREA
+           ===================================================== */
+
+        .upload-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .upload-box {
+
+            border: 2px dashed #cbd5e1;
+
+            border-radius: 10px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            background: #f8fafc;
+        }
+
+
+        .upload-box h3 {
+
+            margin-top: 0;
+
+            margin-bottom: 10px;
+
+            color: #334155;
+        }
+
+
+        .upload-box p {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+
+        input[type="file"] {
+
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 6px;
+
+            background: white;
+        }
+
+
+        /* =====================================================
+           FILE LIST
+           ===================================================== */
+
+        .file-list {
+
+            margin-top: 15px;
+
+            text-align: left;
+
+            max-height: 180px;
+
+            overflow-y: auto;
+
+            font-size: 14px;
+
+            color: #475569;
+        }
+
+
+        .file-item {
+
+            padding: 6px 8px;
+
+            border-bottom:
+                1px solid #e2e8f0;
+        }
+
+
+        /* =====================================================
+           BUTTON
+           ===================================================== */
+
+        .button-container {
+
+            text-align: center;
+
+            margin-top: 10px;
+        }
+
+
+        button {
+
+            background: #172b4d;
+
+            color: white;
+
+            border: none;
+
+            padding:
+                13px 30px;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        button:hover {
+
+            background: #263f69;
+        }
+
+
+        button:disabled {
+
+            background: #94a3b8;
+
+            cursor: not-allowed;
+        }
+
+
+        /* =====================================================
+           LOADING
+           ===================================================== */
+
+        #loading {
+
+            display: none;
+
+            text-align: center;
+
+            padding: 20px;
+
+            color: #475569;
+
+            font-size: 16px;
+        }
+
+
+        .spinner {
+
+            display: inline-block;
+
+            width: 25px;
+
+            height: 25px;
+
+            border:
+                3px solid #e2e8f0;
+
+            border-top:
+                3px solid #172b4d;
+
+            border-radius: 50%;
+
+            animation:
+                spin 1s linear infinite;
+
+            vertical-align: middle;
+
+            margin-right: 10px;
+        }
+
+
+        @keyframes spin {
+
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =====================================================
+           ERROR
+           ===================================================== */
+
+        #errorBox {
+
+            display: none;
+
+            background: #fef2f2;
+
+            border:
+                1px solid #fecaca;
+
+            color: #b91c1c;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+           ===================================================== */
+
+        .summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+
+        .summary-box {
+
+            background: #f5f7fa;
+
+            border-radius: 10px;
+
+            padding: 22px;
+
+            text-align: center;
+        }
+
+
+        .summary-label {
+
+            font-size: 16px;
+
+            margin-bottom: 8px;
+
+            color: #334155;
+        }
+
+
+        .summary-value {
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color: #172b4d;
+        }
+
+
+        /* =====================================================
+           PREDICTION TABLE
+           ===================================================== */
+
+        .table-wrapper {
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 900px;
+        }
+
+
+        th {
+
+            background: #eef1f4;
+
+            color: #1e293b;
+
+            font-weight: 600;
+
+            padding: 14px;
+
+            border:
+                1px solid #d8dee6;
+
+            text-align: center;
+        }
+
+
+        td {
+
+            padding: 12px;
+
+            border:
+                1px solid #d8dee6;
+
+            text-align: center;
+
+            background: white;
+        }
+
+
+        tr:hover td {
+
+            background: #f8fafc;
+        }
+
+
+        .confidence {
+
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           MATERIAL / BUILDING TYPE BADGES
+           ===================================================== */
+
+        .badge {
+
+            display: inline-block;
+
+            padding:
+                5px 10px;
+
+            border-radius: 15px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .material-badge {
+
+            background: #e0f2fe;
+
+            color: #0369a1;
+        }
+
+
+        .building-badge {
+
+            background: #ecfdf5;
+
+            color: #047857;
+        }
+
+
+        .damage-badge {
+
+            background: #fff7ed;
+
+            color: #c2410c;
+        }
+
+
+        /* =====================================================
+           PLOTS
+           ===================================================== */
+
+        .plot-card {
+
+            background: #ffffff;
+
+            border:
+                1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            margin-bottom: 25px;
+
+            text-align: center;
+        }
+
+
+        .plot-card h3 {
+
+            margin-top: 0;
+
+            margin-bottom: 18px;
+
+            color: #172b4d;
+
+            font-size: 20px;
+        }
+
+
+        .plot-card img {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            height: auto;
+
+            display: block;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HIDDEN
+           ===================================================== */
+
+        .hidden {
+
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .upload-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .summary-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                width: 97%;
+            }
+
+
+            .card {
+
+                padding: 18px;
+            }
+
+
+            .header h1 {
+
+                font-size: 25px;
+            }
+
+
+            .summary-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="header">
+
+        <h1>
+            Sri Lanka Flood Damage Application
+        </h1>
+
+        <p>
+            Building Material Classification and
+            Residential Depth-Damage Curve Analysis
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         UPLOAD CARD
+         ===================================================== -->
+
+    <div class="card">
+
+        <h2>
+            Upload Building Images and Excel Curves
+        </h2>
+
+
+        <div class="upload-grid">
+
+
+            <!-- IMAGE UPLOAD -->
+
+            <div class="upload-box">
+
+                <h3>
+                    Building Images
+                </h3>
+
+                <p>
+                    Upload one or more building images
+                    for material and damage prediction.
+                </p>
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                >
+
+
+                <div
+                    id="imageFileList"
+                    class="file-list"
+                ></div>
+
+            </div>
+
+
+
+            <!-- EXCEL UPLOAD -->
+
+            <div class="upload-box">
+
+                <h3>
+                    Flood Vulnerability Excel
+                </h3>
+
+                <p>
+                    Upload the Excel file containing
+                    the residential depth-damage curves.
+                </p>
+
+
+                <input
+                    type="file"
+                    id="excelInput"
+                    name="excel"
+                    accept=".xlsx,.xls"
+                >
+
+
+                <div
+                    id="excelFileName"
+                    class="file-list"
+                ></div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- BUTTON -->
+
+        <div class="button-container">
+
+            <button
+                id="analyzeButton"
+                onclick="analyzeImages()"
+            >
+                Analyze Images & Generate Curves
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ERROR
+         ===================================================== -->
+
+    <div
+        id="errorBox"
+    ></div>
+
+
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
+
+    <div
+        id="loading"
+        class="card"
+    >
+
+        <span class="spinner"></span>
+
+        Processing images and generating
+        depth-damage curves...
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PREDICTION RESULTS
+         ===================================================== -->
+
+    <div
+        id="predictionsCard"
+        class="card hidden"
+    >
+
+        <h2>
+            Image Predictions
+        </h2>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Image
+                        </th>
+
+                        <th>
+                            Material
+                        </th>
+
+                        <th>
+                            Material Confidence
+                        </th>
+
+                        <th>
+                            Damage Class
+                        </th>
+
+                        <th>
+                            Damage Confidence
+                        </th>
+
+                        <th>
+                            Building Type
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="predictionsBody"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ANALYSIS SUMMARY
+         ===================================================== -->
+
+    <div
+        id="summaryCard"
+        class="card hidden"
+    >
+
+        <h2>
+            Analysis Summary
+        </h2>
+
+
+        <div class="summary-grid">
+
+
+            <!-- TOTAL -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Total Images
+                </div>
+
+                <div
+                    id="totalImages"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- LOW -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Low
+                </div>
+
+                <div
+                    id="lowCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- MODERATE -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Moderate
+                </div>
+
+                <div
+                    id="moderateCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- SEVERE -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Severe
+                </div>
+
+                <div
+                    id="severeCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- BRICK -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Brick
+                </div>
+
+                <div
+                    id="brickCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- CONCRETE -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Concrete
+                </div>
+
+                <div
+                    id="concreteCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- TIMBER -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Timber
+                </div>
+
+                <div
+                    id="timberCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- PERMANENT -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Residential Permanent
+                </div>
+
+                <div
+                    id="permanentCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- SEMI-PERMANENT -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Residential Semi-Permanent
+                </div>
+
+                <div
+                    id="semiPermanentCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- TEMPORARY -->
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Residential Temporary
+                </div>
+
+                <div
+                    id="temporaryCount"
+                    class="summary-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CURVE PLOTS
+         ===================================================== -->
+
+    <div
+        id="plotsCard"
+        class="card hidden"
+    >
+
+        <h2>
+            Residential Depth-Damage Curves
+        </h2>
+
+
+        <p
+            style="
+                color:#64748b;
+                margin-bottom:25px;
+            "
+        >
+
+            Each curve set contains the three
+            residential building types from the
+            uploaded Excel file:
+            Residential Permanent,
+            Residential Semi-Permanent,
+            and Residential Temporary.
+
+        </p>
+
+
+        <div
+            id="plotsContainer"
+        ></div>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================================
+   HTML ESCAPE FUNCTION
+   ========================================================= */
+
+function escapeHtml(value) {
+
+    if (value === null ||
+        value === undefined) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =========================================================
+   IMAGE FILE LIST
+   ========================================================= */
+
+document
+    .getElementById(
+        "imageInput"
+    )
+    .addEventListener(
+        "change",
+        function () {
+
+            const files =
+                this.files;
+
+            const container =
+                document.getElementById(
+                    "imageFileList"
+                );
+
+
+            container.innerHTML =
+                "";
+
+
+            if (files.length === 0) {
+
+                return;
+
+            }
+
+
+            for (
+                let i = 0;
+                i < files.length;
+                i++
+            ) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "file-item";
+
+
+                item.textContent =
+                    `${i + 1}. ${files[i].name}`;
+
+
+                container.appendChild(
+                    item
+                );
+
+            }
+
+        }
+    );
+
+
+
+/* =========================================================
+   EXCEL FILE NAME
+   ========================================================= */
+
+document
+    .getElementById(
+        "excelInput"
+    )
+    .addEventListener(
+        "change",
+        function () {
+
+            const container =
+                document.getElementById(
+                    "excelFileName"
+                );
+
+
+            container.innerHTML =
+                "";
+
+
+            if (
+                this.files.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "file-item";
+
+
+            item.textContent =
+                this.files[0].name;
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+
+/* =========================================================
+   SHOW ERROR
+   ========================================================= */
+
+function showError(message) {
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    errorBox.textContent =
+        message;
+
+
+    errorBox.style.display =
+        "block";
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+/* =========================================================
+   HIDE ERROR
+   ========================================================= */
+
+function hideError() {
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    errorBox.style.display =
+        "none";
+
+
+    errorBox.textContent =
+        "";
+
+}
+
+
+
+/* =========================================================
+   MAIN ANALYSIS FUNCTION
+   ========================================================= */
+
+async function analyzeImages() {
+
+
+    hideError();
+
+
+    const imageInput =
+        document.getElementById(
+            "imageInput"
+        );
+
+
+    const excelInput =
+        document.getElementById(
+            "excelInput"
+        );
+
+
+    const button =
+        document.getElementById(
+            "analyzeButton"
+        );
+
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+
+
+    /* -----------------------------------------------------
+       VALIDATE IMAGES
+       ----------------------------------------------------- */
+
+    if (
+        !imageInput.files ||
+        imageInput.files.length === 0
+    ) {
+
+        showError(
+            "Please upload at least one building image."
+        );
+
+        return;
+
+    }
+
+
+
+    /* -----------------------------------------------------
+       VALIDATE EXCEL
+       ----------------------------------------------------- */
+
+    if (
+        !excelInput.files ||
+        excelInput.files.length === 0
+    ) {
+
+        showError(
+            "Please upload the Excel curve file."
+        );
+
+        return;
+
+    }
+
+
+
+    /* -----------------------------------------------------
+       CREATE FORM DATA
+       ----------------------------------------------------- */
+
+    const formData =
+        new FormData();
+
+
+    for (
+        let i = 0;
+        i < imageInput.files.length;
+        i++
+    ) {
+
+        formData.append(
+
+            "images",
+
+            imageInput.files[i]
+
+        );
+
+    }
+
+
+    formData.append(
+
+        "excel",
+
+        excelInput.files[0]
+
+    );
+
+
+
+    /* -----------------------------------------------------
+       UI LOADING STATE
+       ----------------------------------------------------- */
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "Processing...";
+
+
+    loading.style.display =
+        "block";
+
+
+
+    try {
+
+
+        /* -------------------------------------------------
+           SEND REQUEST TO FLASK
+           ------------------------------------------------- */
+
+        const response =
+            await fetch(
+
+                "/analyze",
+
+                {
+
+                    method: "POST",
+
+                    body: formData
+
+                }
+
+            );
+
+
+
+        /* -------------------------------------------------
+           READ RESPONSE
+           ------------------------------------------------- */
+
+        const data =
+            await response.json();
+
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+
+                data.error ||
+                "The server returned an error."
+
+            );
+
+        }
+
+
+
+        /* -------------------------------------------------
+           DISPLAY PREDICTIONS
+           ------------------------------------------------- */
+
+        displayPredictions(
+            data.predictions
+        );
+
+
+
+        /* -------------------------------------------------
+           DISPLAY SUMMARY
+           ------------------------------------------------- */
+
+        displaySummary(
+            data
+        );
+
+
+
+        /* -------------------------------------------------
+           DISPLAY CURVE PLOTS
+           ------------------------------------------------- */
+
+        displayCurvePlots(
+            data.curve_plots
+        );
+
+
+
+        /* -------------------------------------------------
+           SCROLL TO RESULTS
+           ------------------------------------------------- */
+
+        document
+            .getElementById(
+                "predictionsCard"
+            )
+            .scrollIntoView({
+
+                behavior: "smooth"
+
+            });
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        showError(
+            error.message
+        );
+
+    }
+
+    finally {
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "Analyze Images & Generate Curves";
+
+
+        loading.style.display =
+            "none";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   DISPLAY PREDICTIONS
+   ========================================================= */
+
+function displayPredictions(
+    predictions
+) {
+
+
+    const card =
+        document.getElementById(
+            "predictionsCard"
+        );
+
+
+    const body =
+        document.getElementById(
+            "predictionsBody"
+        );
+
+
+    body.innerHTML =
+        "";
+
+
+
+    predictions.forEach(
+        prediction => {
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const materialConfidence =
+                (
+                    Number(
+                        prediction.material_confidence
+                    ) * 100
+                ).toFixed(2);
+
+
+            const damageConfidence =
+                (
+                    Number(
+                        prediction.damage_confidence
+                    ) * 100
+                ).toFixed(2);
+
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${escapeHtml(
+                        prediction.image
+                    )}
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="badge material-badge"
+                    >
+
+                        ${escapeHtml(
+                            prediction.material
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td
+                    class="confidence"
+                >
+
+                    ${materialConfidence}%
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="badge damage-badge"
+                    >
+
+                        ${escapeHtml(
+                            prediction.damage
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td
+                    class="confidence"
+                >
+
+                    ${damageConfidence}%
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="badge building-badge"
+                    >
+
+                        ${escapeHtml(
+                            prediction.building_type
+                        )}
+
+                    </span>
+
+                </td>
+
+            `;
+
+
+            body.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    card.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+
+/* =========================================================
+   DISPLAY SUMMARY
+   ========================================================= */
+
+function displaySummary(
+    data
+) {
+
+
+    document
+        .getElementById(
+            "totalImages"
+        )
+        .textContent =
+        data.total_images || 0;
+
+
+
+    const damageCounts =
+        data.damage_counts || {};
+
+
+
+    document
+        .getElementById(
+            "lowCount"
+        )
+        .textContent =
+        damageCounts.Low || 0;
+
+
+    document
+        .getElementById(
+            "moderateCount"
+        )
+        .textContent =
+        damageCounts.Moderate || 0;
+
+
+    document
+        .getElementById(
+            "severeCount"
+        )
+        .textContent =
+        damageCounts.Severe || 0;
+
+
+
+    const materialCounts =
+        data.material_counts || {};
+
+
+
+    document
+        .getElementById(
+            "brickCount"
+        )
+        .textContent =
+        materialCounts.Brick || 0;
+
+
+    document
+        .getElementById(
+            "concreteCount"
+        )
+        .textContent =
+        materialCounts.Concrete || 0;
+
+
+    document
+        .getElementById(
+            "timberCount"
+        )
+        .textContent =
+        materialCounts.Timber || 0;
+
+
+
+    const buildingCounts =
+        data.building_counts || {};
+
+
+
+    document
+        .getElementById(
+            "permanentCount"
+        )
+        .textContent =
+
+        buildingCounts[
+            "Residential Permanent"
+        ] || 0;
+
+
+
+    document
+        .getElementById(
+            "semiPermanentCount"
+        )
+        .textContent =
+
+        buildingCounts[
+            "Residential Semi-Permanent"
+        ] || 0;
+
+
+
+    document
+        .getElementById(
+            "temporaryCount"
+        )
+        .textContent =
+
+        buildingCounts[
+            "Residential Temporary"
+        ] || 0;
+
+
+
+    document
+        .getElementById(
+            "summaryCard"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+}
+
+
+
+/* =========================================================
+   DISPLAY FIVE CURVE-SET PLOTS
+   ========================================================= */
+
+function displayCurvePlots(
+    curvePlots
+) {
+
+
+    const container =
+        document.getElementById(
+            "plotsContainer"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+
+    if (
+        !curvePlots ||
+        curvePlots.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <p
+                style="
+                    color:#b91c1c;
+                    text-align:center;
+                "
+            >
+
+                No curve plots were generated.
+
+            </p>
+
+        `;
+
+
+        document
+            .getElementById(
+                "plotsCard"
+            )
+            .classList.remove(
+                "hidden"
+            );
+
+
+        return;
+
+    }
+
+
+
+    curvePlots.forEach(
+        curve => {
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "plot-card";
+
+
+            card.innerHTML = `
+
+                <h3>
+
+                    ${escapeHtml(
+                        curve.curve_set
+                    )}
+
+                </h3>
+
+
+                <img
+
+                    src="${curve.plot}"
+
+                    alt="${escapeHtml(
+                        curve.curve_set
+                    )} residential depth-damage curves"
+
+                >
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+
+    document
+        .getElementById(
+            "plotsCard"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
